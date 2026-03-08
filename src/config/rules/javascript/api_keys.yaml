@@ -1,0 +1,37 @@
+- id: SECRET-API-KEY-001
+  name: Hardcoded API Key Pattern
+  type: regex
+  languages:
+    - generic
+  severity: CRITICAL
+  category: "API Key Exposure"
+  pattern: (?i)(api[_-]?key|access[_-]?key|secret[_-]?key|client[_-]?secret|private[_-]?key)\s*[:=]\s*['"]([a-zA-Z0-9_-]{20,})['"]
+  description: |
+    Hardcoded API key or secret found in source code.
+    This can lead to unauthorized access to third-party services.
+  remediation: |
+    Store API keys and secrets in environment variables, configuration files
+    (excluded from version control), or secret management services.
+  cwe_ids:
+    - CWE-798
+  owasp_top_10:
+    - A2:2017-Broken Authentication
+  enabled: true
+  priority: 10
+
+- id: SECRET-JWT-001
+  name: JWT Token in Code
+  type: regex
+  languages:
+    - generic
+  severity: HIGH
+  category: "JWT Exposure"
+  pattern: eyJ[a-zA-Z0-9_-]*\.[a-zA-Z0-9_-]*\.[a-zA-Z0-9_-]*
+  description: |
+    JSON Web Token (JWT) found in source code.
+    JWTs should not be hardcoded as they may contain sensitive information.
+  remediation: |
+    Generate JWTs dynamically at runtime.
+    Store JWT secrets securely, not in source code.
+  enabled: true
+  priority: 8

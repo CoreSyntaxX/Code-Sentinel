@@ -1,0 +1,64 @@
+- id: JS-DOM-XSS-001
+  name: Unsafe innerHTML Assignment
+  type: regex
+  languages:
+    - javascript
+    - html
+  severity: HIGH
+  category: "DOM XSS"
+  pattern: \.innerHTML\s*=\s*[^;]+
+  description: |
+    User input is directly assigned to innerHTML property without sanitization.
+    This can lead to DOM-based Cross-Site Scripting (XSS) vulnerabilities.
+  remediation: |
+    Use textContent instead of innerHTML for text-only updates.
+    If HTML must be inserted, use DOMPurify or another trusted sanitization library.
+  references:
+    - https://owasp.org/www-community/attacks/DOM_Based_XSS
+    - https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html
+  cwe_ids:
+    - CWE-79
+  owasp_top_10:
+    - A7:2017-Cross-Site Scripting (XSS)
+  enabled: true
+  priority: 10
+
+- id: JS-DOM-XSS-002
+  name: "Dangerous Function: eval()"
+  type: regex
+  languages:
+    - javascript
+  severity: CRITICAL
+  category: "DOM XSS"
+  pattern: eval\s*\(
+  description: |
+    The eval() function executes arbitrary JavaScript code from a string.
+    This is extremely dangerous if user input can reach it.
+  remediation: |
+    Avoid using eval() entirely.
+    Use JSON.parse() for parsing JSON, or Function constructor with extreme caution.
+  references:
+    - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+    - https://owasp.org/www-community/attacks/xss/
+  cwe_ids:
+    - CWE-95
+  owasp_top_10:
+    - A7:2017-Cross-Site Scripting (XSS)
+  enabled: true
+  priority: 10
+
+- id: JS-DOM-XSS-003
+  name: document.write with User Input
+  type: regex
+  languages:
+    - javascript
+  severity: HIGH
+  category: "DOM XSS"
+  pattern: document\.write\s*\([^)]*[\+\s]*(user|input|param|query)[^)]*\)
+  description: |
+    document.write() with concatenated user input can lead to XSS.
+  remediation: |
+    Avoid document.write() with dynamic content.
+    Use DOM manipulation methods like createElement and appendChild.
+  enabled: true
+  priority: 8
